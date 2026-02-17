@@ -20,9 +20,14 @@ function App() {
       ? <LoginPage onLogin={() => setIsLoggedIn(true)} onSwitchToRegister={() => setCurrentPage('register')} />
       : <RegisterPage onRegister={() => setIsLoggedIn(true)} onSwitchToLogin={() => setCurrentPage('login')} />;
   }
-// src/App.js içindeki return kısmında Navbar'ın hemen üstüne şunu eklemiş olmalısın:
 
-{currentPage === 'admin' && <AdminPanel />}
+  return (
+    <div className="App" style={{ paddingBottom: '70px', backgroundColor: '#121212', minHeight: '100vh' }}>
+      {currentPage === 'home' && <HomePage user={user} setPage={setCurrentPage} />}
+      {currentPage === 'quantify' && <QuantifyPage user={user} setUser={setUser} />}
+      {currentPage === 'deposit' && <DepositPage />}
+      {currentPage === 'team' && <div style={{color: 'white', padding: '20px'}}>Takım Ağı Aktif Ediliyor...</div>}
+      {currentPage === 'admin' && <AdminPanel />}
 
 {/* GİZLİ GİRİŞ: Sağ üst köşeye 5 kez hızlıca tıklarsan admin açılır gibi düşünebilirsin 
     Şimdilik basit bir görünmez kutu: */}
@@ -38,13 +43,6 @@ function App() {
     cursor: 'pointer' 
   }} 
 />
-  return (
-    <div className="App" style={{ paddingBottom: '70px', backgroundColor: '#121212', minHeight: '100vh' }}>
-      {currentPage === 'home' && <HomePage user={user} setPage={setCurrentPage} />}
-      {currentPage === 'quantify' && <QuantifyPage user={user} setUser={setUser} />}
-      {currentPage === 'deposit' && <DepositPage />}
-      {currentPage === 'team' && <div style={{color: 'white', padding: '20px'}}>Takım Ağı Aktif Ediliyor...</div>}
-      
       <Navbar activeTab={currentPage} setActiveTab={setCurrentPage} />
     </div>
   );
