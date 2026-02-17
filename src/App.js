@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import TeamPage from './pages/TeamPage.jsx';
 import RegisterPage from './pages/RegisterPage.jsx';
 import LoginPage from './pages/LoginPage.jsx';
 import QuantifyPage from './pages/QuantifyPage.jsx';
@@ -28,6 +29,7 @@ function App() {
       {currentPage === 'deposit' && <DepositPage />}
       {currentPage === 'team' && <div style={{color: 'white', padding: '20px'}}>Takım Ağı Aktif Ediliyor...</div>}
       {currentPage === 'admin' && <AdminPanel />}
+	  {currentPage === 'team' && <TeamPage user={user} />}
 
 {/* GİZLİ GİRİŞ: Sağ üst köşeye 5 kez hızlıca tıklarsan admin açılır gibi düşünebilirsin 
     Şimdilik basit bir görünmez kutu: */}
