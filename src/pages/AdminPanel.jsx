@@ -1,44 +1,62 @@
 import React, { useState } from 'react';
 
 const AdminPanel = () => {
-  const [pendingDeposits, setPendingDeposits] = useState([
-    { id: 101, user: 'ali@mail.com', amount: 500, time: '14:20' },
-    { id: 102, user: 'veli@mail.com', amount: 1000, time: '15:10' }
+  // Simüle edilmiş çekim talepleri
+  const [withdrawRequests, setWithdrawRequests] = useState([
+    { id: 201, user: 'mehmet@mail.com', amount: 150, address: 'TRC20...xyz789', status: 'Bekliyor' },
+    { id: 202, user: 'ayse@mail.com', amount: 45, address: 'TRC20...abc456', status: 'Bekliyor' }
   ]);
 
-  const approveDeposit = (id) => {
-    setPendingDeposits(pendingDeposits.filter(d => d.id !== id));
-    alert("Yatırım başarıyla onaylandı ve bakiyeye eklendi!");
+  const handleAction = (id, action) => {
+    setWithdrawRequests(withdrawRequests.map(req => 
+      req.id === id ? { ...req, status: action === 'approve' ? 'Onaylandı' : 'Reddedildi' } : req
+    ));
+    alert(action === 'approve' ? "Ödeme onaylandı, kullanıcıya bildirim gitti." : "Talep reddedildi.");
   };
 
   return (
-    <div style={{ padding: '20px', color: 'white', backgroundColor: '#000', minHeight: '100vh' }}>
-      <h2 style={{ color: '#ff4444' }}>Yönetici Kontrolü</h2>
-      
-      <h3 style={{ marginTop: '30px' }}>🔔 Bekleyen Yatırımlar ({pendingDeposits.length})</h3>
-      {pendingDeposits.map(dep => (
-        <div key={dep.id} style={requestCard}>
-          <div>
-            <p style={{ margin: 0 }}><strong>{dep.user}</strong></p>
-            <p style={{ margin: 0, color: '#00ffcc' }}>{dep.amount} USDT</p>
+    <div style={{ padding: '20px', color: 'white', backgroundColor: '#000', minHeight: '100vh', paddingBottom: '100px' }}>
+      <h2 style={{ color: '#ff4444', borderBottom: '2px solid #ff4444', paddingBottom: '10px' }}>Yönetim Merkezi</h2>
+
+      {/* Para Çekme Talepleri Bölümü */}
+      <h3 style={{ marginTop: '30px', display: 'flex', alignItems: 'center', gap: '10px' }}>
+        💸 Para Çekme Talepleri 
+        <span style={badgeStyle}>{withdrawRequests.filter(r => r.status === 'Bekliyor').length}</span>
+      </h3>
+
+      {withdrawRequests.map(req => (
+        <div key={req.id} style={{ ...cardStyle, borderLeft: req.status === 'Onaylandı' ? '5px solid #00ffcc' : '5px solid #ff4444' }}>
+          <div style={{ flex: 1 }}>
+            <p style={{ margin: 0, fontWeight: 'bold' }}>{req.user}</p>
+            <p style={{ margin: '5px 0', color: '#00ffcc', fontSize: '18px' }}>{req.amount} USDT</p>
+            <p style={{ margin: 0, fontSize: '11px', color: '#888' }}>Adres: {req.address}</p>
+            <p style={{ margin: '5px 0', fontSize: '12px', fontStyle: 'italic' }}>Durum: {req.status}</p>
           </div>
-          <div style={{ display: 'flex', gap: '10px' }}>
-            <button onClick={() => approveDeposit(dep.id)} style={approveBtn}>Onayla</button>
-            <button style={rejectBtn}>Reddet</button>
-          </div>
+          
+          {req.status === 'Bekliyor' && (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '5px' }}>
+              <button onClick={() => handleAction(req.id, 'approve')} style={approveBtn}>Onayla</button>
+              <button onClick={() => handleAction(req.id, 'reject')} style={rejectBtn}>Reddet</button>
+            </div>
+          )}
         </div>
       ))}
 
-      <h3 style={{ marginTop: '40px' }}>⚙️ Sistem Ayarları</h3>
-      <div style={menuItem}>Minimum Çekim: 10 USDT</div>
-      <div style={menuItem}>VIP 1 Fiyatı: 50 USDT</div>
+      {/* Hızlı İstatistikler */}
+      <div style={{ marginTop: '40px', backgroundColor: '#111', padding: '15px', borderRadius: '10px' }}>
+        <h4>⚙️ Sistem Özeti</h4>
+        <div style={statLine}>Bugünkü Toplam Çekim: <span style={{color: '#ff4444'}}>$195.00</span></div>
+        <div style={statLine}>Onay Bekleyen Toplam: <span style={{color: '#00ffcc'}}>$195.00</span></div>
+      </div>
     </div>
   );
 };
 
-const requestCard = { display: 'flex', justifyContent: 'space-between', alignItems: 'center', backgroundColor: '#1a1a1a', padding: '15px', borderRadius: '10px', marginBottom: '10px', border: '1px solid #333' };
-const approveBtn = { backgroundColor: '#00ffcc', border: 'none', padding: '8px 15px', borderRadius: '5px', fontWeight: 'bold' };
-const rejectBtn = { backgroundColor: '#ff4444', border: 'none', padding: '8px 15px', borderRadius: '5px', color: 'white' };
-const menuItem = { padding: '15px', backgroundColor: '#111', marginBottom: '5px', borderRadius: '5px', fontSize: '14px' };
+// Stiller
+const cardStyle = { display: 'flex', justifyContent: 'space-between', alignItems: 'center', backgroundColor: '#1a1a1a', padding: '15px', borderRadius: '10px', marginBottom: '15px' };
+const approveBtn = { backgroundColor: '#00ffcc', color: 'black', border: 'none', padding: '8px 12px', borderRadius: '5px', fontWeight: 'bold', cursor: 'pointer' };
+const rejectBtn = { backgroundColor: 'transparent', color: '#ff4444', border: '1px solid #ff4444', padding: '8px 12px', borderRadius: '5px', cursor: 'pointer' };
+const badgeStyle = { backgroundColor: '#ff4444', color: 'white', fontSize: '12px', padding: '2px 8px', borderRadius: '10px' };
+const statLine = { display: 'flex', justifyContent: 'space-between', fontSize: '14px', margin: '10px 0', color: '#ccc' };
 
 export default AdminPanel;
