@@ -6,6 +6,7 @@ import QuantifyPage from './pages/QuantifyPage.jsx';
 import HomePage from './pages/HomePage.jsx';
 import DepositPage from './pages/DepositPage.jsx';
 import Navbar from './components/Navbar.jsx';
+import MinePage from './pages/MinePage.jsx'; // 1. Import et
 
 function App() {
   const [currentPage, setCurrentPage] = useState('login');
@@ -30,6 +31,7 @@ function App() {
       {currentPage === 'team' && <div style={{color: 'white', padding: '20px'}}>Takım Ağı Aktif Ediliyor...</div>}
       {currentPage === 'admin' && <AdminPanel />}
 	  {currentPage === 'team' && <TeamPage user={user} />}
+	  {currentPage === 'mine' && <MinePage user={user} setPage={setCurrentPage} />}
 
 {/* GİZLİ GİRİŞ: Sağ üst köşeye 5 kez hızlıca tıklarsan admin açılır gibi düşünebilirsin 
     Şimdilik basit bir görünmez kutu: */}
