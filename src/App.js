@@ -15,7 +15,6 @@ function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [user, setUser] = useState(null);
 
-  // --- HAFIZA KONTROLÜ (useEffect) ---
   useEffect(() => {
     const savedUser = localStorage.getItem('coirno_user');
     if (savedUser) {
@@ -24,19 +23,18 @@ function App() {
     }
   }, []);
 
-  // --- GİRİŞ YAPMA FONKSİYONU ---
   const handleLogin = (userData) => {
     const newUser = { email: userData.email, balance: 695.31, vipLevel: 2 };
     setUser(newUser);
     setIsLoggedIn(true);
-    localStorage.setItem('coirno_user', JSON.stringify(newUser)); // Tarayıcıya kaydet
+    localStorage.setItem('coirno_user', JSON.stringify(newUser));
+    setCurrentPage('home');
   };
 
-  // --- ÇIKIŞ YAPMA FONKSİYONU ---
   const handleLogout = () => {
     setIsLoggedIn(false);
     setUser(null);
-    localStorage.removeItem('coirno_user'); // Hafızayı temizle
+    localStorage.removeItem('coirno_user');
     setCurrentPage('login');
   };
 
@@ -57,15 +55,9 @@ function App() {
       {currentPage === 'admin' && <AdminPanel />}
       
       <Navbar activeTab={currentPage} setActiveTab={setCurrentPage} />
-
-      {/* Admin Gizli Giriş */}
-      <div 
-        onClick={() => setCurrentPage('admin')} 
-        style={{ position: 'fixed', top: 0, right: 0, width: '40px', height: '40px', zIndex: 9999 }} 
-      />
+      <div onClick={() => setCurrentPage('admin')} style={{ position: 'fixed', top: 0, right: 0, width: '40px', height: '40px', zIndex: 9999 }} />
     </div>
   );
 }
-
 
 export default App;
